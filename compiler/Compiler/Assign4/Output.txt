@@ -1,0 +1,35 @@
+
+IDENTIFIER k has been declared properly
+IDENTIFIER c has been declared properly
+IDENTIFIER a has been declared properly
+IDENTIFIER s has been declared properly
+IDENTIFIER d has been declared properly
+IDENTIFIER b has been declared properly
+t0 = k + 8
+t1 = c - s
+t2 = t0 * t1
+a = t2
+t3 = b * c
+t4 = d * c
+t5 = t3 + t4
+t6 = c / 5
+t7 = t5 - t6
+t8 = 2 * 8
+t9 = t7 + t8
+t10 = t9 - 5
+t11 = 5 * 5
+t12 = t11 / 8
+t13 = t10 + t12
+t14 = t13 - 8
+a = t14
+SYMBOL TABLE:
+|0| d float 0 --> NULL
+|1|      --> NULL
+|2|      --> NULL
+|3|      --> NULL
+|4|      --> NULL
+|5| s char 0 --> NULL
+|6|      --> NULL
+|7| a int 0 -->  k int 0 --> NULL
+|8| b float 0 --> NULL
+|9| c int 0 --> NULL

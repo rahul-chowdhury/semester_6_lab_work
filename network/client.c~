@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h> 
+#include <stdlib.h>
+void error(char *msg)
+{
+    perror(msg);
+    exit(0);
+}
+
+int main(int argc, char *argv[])
+{
+    int sockfd, portno, n;
+    FILE *f_client;
+    char client_filename[256],command[256],filename[256],temp[256];
+    strcpy(client_filename,"client_files/");
+    struct sockaddr_in serv_addr;
+    struct hostent *server;
+
+    char buffer[256];
+    if (argc < 3) {
+       fprintf(stderr,"usage %s hostname port\n", argv[0]);
+       exit(0);
+    }
+    portno = atoi(argv[2]);
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) 
+	error("ERROR opening socket");
+    server = gethostbyname(argv[1]);
+    if (server == NULL) {
+	fprintf(stderr,"ERROR, no such host\n");
+	exit(0);
+    }
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    bcopy((char *)server->h_addr, 
+	 (char *)&serv_addr.sin_addr.s_addr,
+	 server->h_length);
+    serv_addr.sin_port = htons(portno);
+    if (connect(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0) 
+	error("ERROR connecting");
+       
+    printf("Please enter the message: ");
+    //bzero(buffer,256);
+    fgets(temp,255,stdin);
+    //strcpy(temp,buffer);
+    printf("i am here\n");
+    strcpy(command,strtok(temp," "));
+     printf("command:%s111\n",command);
+     printf("i am here\n");
+    strcpy(filename,strtok(NULL,"\n"));
+    printf("filename:%s111\n",filename);
+    strcat(client_filename,filename);
+    f_client=fopen(client_filename,"w+");
+    n = write(sockfd,temp,strlen(temp));
+    if (n < 0) 
+	 error("ERROR writing to socket");
+    //bzero(buffer,1);
+    n = read(sockfd,buffer,1);
+    if (n < 0) 
+	 error("ERROR reading from socket");
+    while(strcmp(buffer,"#")!=0)
+    {
+    	printf("buffer:%s111\n",buffer);
+    	fputs(buffer,f_client);
+    	n = read(sockfd,buffer,1);
+	    if (n < 0) 
+		 error("ERROR reading from socket");
+     }
+     fwrite("\0",1,1,f_client);
+     fclose(f_client);
+    //printf("%s\n",buffer);
+    return 0;
+}

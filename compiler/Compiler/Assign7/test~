@@ -1,0 +1,12 @@
+int a,b;
+float c;
+char d,e;
+
+e=b*e+c/e;
+
+if(d>e){
+	e=a+b;
+}
+else{
+	e=a-b;
+}

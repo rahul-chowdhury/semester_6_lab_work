@@ -1,0 +1,3 @@
+int k,c;
+float s;
+if(k>6) k=18;else c=s;

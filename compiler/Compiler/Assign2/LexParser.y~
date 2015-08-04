@@ -1,0 +1,29 @@
+%{
+	#include<stdio.h>
+	void yyerror(char *s);
+%}
+
+%token SPACE DATATYPE SEMICOLON IDENTIFIER COMMA
+
+%%
+statements	: DATATYPE SPACE IDENTIFIER SEMICOLON		{printf("IDENTIFIER %d has been declared properly",$3);}
+		| DATATYPE SPACE IDENTIFIER term SEMICOLON	{printf("IDENTIFIER %d has been declared properly",$3);}
+		| statements statements				{;}
+		;
+term		: term term					{;}
+		| COMMA IDENTIFIER				{printf("IDENTIFIER %d has been declared properly",$2);}
+		| COMMA SPACE IDENTIFIER			{printf("IDENTIFIER %d has been declared properly",$3);}
+		; 
+
+%%
+
+int main(void)
+{
+	return yyparse();
+}
+void yyerror(char *s)
+{
+	fprintf(stderr,"%s\n",s);
+}
+
+

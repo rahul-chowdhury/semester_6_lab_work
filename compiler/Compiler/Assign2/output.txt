@@ -1,0 +1,13 @@
+Error 1: IDENTIFIER d in line no. 3 has been declared earlier
+Error 2: IDENTIFIER a in line no. 4 has been declared earlier
+SYMBOL TABLE:
+|0| d --> NULL
+|1|  --> NULL
+|2|  --> NULL
+|3|  --> NULL
+|4|  --> NULL
+|5|  --> NULL
+|6|  --> NULL
+|7| a --> NULL
+|8| b -->  ebc --> NULL
+|9| c -->  cd --> NULL

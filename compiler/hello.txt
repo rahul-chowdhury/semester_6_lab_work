@@ -1,0 +1,44 @@
+%{
+	#include<stdio.h>
+	#include<string.h>
+	#define TABLE_SIZE 20
+	#define ID_SIZE 20
+	#define ERROR 9999999
+	int type_flag;
+%}
+
+%union{
+	char id_name[20];
+}
+
+%token IF ELSE WHILE FOR BREAK CONTINUE RETURN CASE CHAR CONST DEFAULT DO DOUBLE FLOAT INT LONG SHORT
+%token <id_name> IDENTIFIER;
+  
+%start program
+
+%%
+
+datatype: INT	{type_flag=INT;}
+		|
+		FLOAT	{type_flag=FLOAT;}
+		|
+		CHAR	{type_flag=CHAR;}
+;
+
+idlist: IDENTIFIER ',' idlist { checkHash($1,type_flag); }
+		|
+		IDENTIFIER';' { checkHash($1,type_flag); }
+;
+
+declaration: datatype idlist';'
+;
+
+program: declaration
+		|
+		declaration program	
+;
+
+%%
+
+int id_count=0;
+

@@ -1,0 +1,22 @@
+
+IDENTIFIER c has been declared properly
+IDENTIFIER k has been declared properly
+IDENTIFIER s has been declared properly
+if k>6 goto L0
+goto L1
+L0: 
+t0 = c + s
+k = t0
+L1: 
+c = s
+SYMBOL TABLE:
+|0|      --> NULL
+|1|      --> NULL
+|2|      --> NULL
+|3|      --> NULL
+|4|      --> NULL
+|5| s float 0 --> NULL
+|6|      --> NULL
+|7| k int 0 --> NULL
+|8|      --> NULL
+|9| c int 0 --> NULL

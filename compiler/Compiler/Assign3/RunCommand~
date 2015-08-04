@@ -1,0 +1,4 @@
+#!/bin/bash
+yacc -d LexParser.y
+lex LexAnalyzer.l
+gcc lex.yy.c y.tab.c -o Parser

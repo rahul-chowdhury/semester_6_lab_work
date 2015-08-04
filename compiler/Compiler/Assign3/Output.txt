@@ -1,0 +1,26 @@
+
+Error 1: IDENTIFIER acv in line no. 1 has been declared earlier
+IDENTIFIER acv has been declared properly
+IDENTIFIER fd has been declared properly
+IDENTIFIER hfd has been declared properly
+IDENTIFIER ldf has been declared properly
+IDENTIFIER acv has been declared properly
+Error 2: IDENTIFIER acv in line no. 2 has been declared earlier
+IDENTIFIER acv has been declared properly
+IDENTIFIER dsf has been declared properly
+IDENTIFIER sdfj has been declared properly
+IDENTIFIER sdf has been declared properly
+IDENTIFIER dfsd has been declared properly
+IDENTIFIER sakug has been declared properly
+syntax error
+SYMBOL TABLE:
+|0| ldf int --> NULL
+|1|   --> NULL
+|2| fd int --> NULL
+|3| sdfj char --> NULL
+|4| acv int --> NULL
+|5|   --> NULL
+|6| hfd int --> NULL
+|7| dsf char -->  sdf char -->  dfsd char --> NULL
+|8|   --> NULL
+|9| sakug char --> NULL

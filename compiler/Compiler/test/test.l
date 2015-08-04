@@ -1,0 +1,16 @@
+%{
+%}
+%%
+start		printf("Start received\n");
+stop		printf("Stop received\n");
+[a-zA-Z]	printf("Character received\n");
+%%
+int main()
+{
+	yylex();
+	return 0;
+}
+int yywrap()
+{
+	return 1;
+}

@@ -1,0 +1,95 @@
+1)
+CREATE TABLE DEPART(DEPT_CODE char(5) primary key,DEPT_NAME char(15));
+CREATE TABLE NEWEMP(EMP_CODE char(6) primary key,EMP_NAME char(20),DEPT_CODE char(5) references DEPART,ADDRESS char(25),CITY char(20),GRADE char(1)Constraint Gr Check(GRADE in('A','B','C')), BASIC Number Constraint BETN Check(BASIC between 5000 and 9000),JN_DT Date DEFAULT SYSDATE);
+CREATE TABLE LEAVE(EMP_CODE char(6) references NEWEMP ON DELETE CASCADE,TYPE char(2),START_DT Date,END_DT Date);
+insert into DEPART values('aA.','Personnel');
+insert into DEPART values('bB.','Production');
+insert into DEPART values('cC.','Purchase');
+insert into DEPART values('dD.','Finance');
+insert into DEPART values('eE.','Research');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('001','Atish','aA.','Sinthi','kolkata','A','5000');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('002','Pujon','bB.','Saltlake','kolkata','A','6000');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('003','Subham','cC.','Anwar Shah','kolkata','C','7000');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('004','Pritam','dD.','Koshba','kolkata','B','8400');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('005','Debottam','eE.','Sarobar','kolkata','A','9000');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('006','Shrestha','eE.','House','Jamshedpur','A','8000');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('007','Biswaroop','','Dumdum','kolkata','B','6000');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('008','Arpan','cC.','Nagerbazar','kolkata','A','6200');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('009','Debagnick','bB.','Sinthi','kolkata','B','5000');
+insert into NEWEMP (EMP_CODE,EMP_NAME,DEPT_CODE,ADDRESS,CITY,GRADE,BASIC) values('010','Ankur','aA.','House','Siliguri','C','8000');
+insert into LEAVE values('001','EL','10-APR-15','27-APR-15');
+insert into LEAVE values('002','CL','22-MAR-15','27-MAR-15');
+insert into LEAVE values('003','EL','10-MAY-15','27-MAY-15');
+insert into LEAVE values('004','ML','01-APR-15','7-APR-15');
+insert into LEAVE values('005','ML','28-MAR-15','31-MAR-15');
+insert into LEAVE values('006','EL','15-APR-15','17-APR-15');
+insert into LEAVE values('007','ML','20-JUN-15','27-JUN-15');
+insert into LEAVE values('008','CL','22-APR-15','27-APR-15');
+insert into LEAVE values('009','CL','21-JUL-15','27-JUL-15');
+insert into LEAVE values('010','ML','21-MAR-15','25-MAR-15');
+
+2.Try to violate the constraints that you have implemented in the table & note , what happens. [Try with
+suitable INSERT/UPDATE/DELETE instruction]
+
+3. a) create a view showing employee code, Name,dcode & Basic for a particular department.
+create view emp_view as select EMP_CODE,EMP_NAME,DEPT_CODE,BASIC from NEWEMP where DEPT_CODE='eE.';
+
+b)Try to ensure a row into the view with valid department & also with invalid ones.
+insert into emp_view values ('&EMP_CODE','&EMP_NAME','&DEPT_CODE',&BASIC);
+
+c)Find the newly inserted row in the table From which view was created.
+select * from NEWEMP where EMP_CODE=011;//where 011 is the emp_code of the row added from the view.
+
+d) Try to increment basic by Rs.100/-
+update emp_view set basic=basic+100;
+
+-e) Check it in the original table.
+select * from NEWEMP where DEPT_CODE='eE.';
+
+f) Delete the view.
+drop view emp_view;
+//Also note suppose I insert a row with a different DEPT_CODE in this view then it will not show in the view but it gets added in the table. 
+
+4. a)create a view Showing empcode, Name, Deptname Basic, leave type, From date & to date.
+create view emp_view2 as select l.EMP_CODE,e.EMP_NAME,BASIC,d.DEPT_NAME,l.TYPE,l.START_DT,l.END_DT from NEWEMP e,DEPART d,LEAVE l where e.DEPT_CODE=d.DEPT_CODE and e.EMP_CODE=l.EMP_CODE;
+
+b)Try to insert a row in the view check what happens?
+insert into emp_view2 values('&EMP_CODE','&EMP_NAME',&BASIC,'&DEPT_NAME','&TYPE','&START_DT','&END_DT');
+ERROR at line 1:
+ORA-01776: cannot modify more than one base table through a join view
+//Hence Error!!
+insert into emp_view2 values('013','Abc',5000,'Research','CL','27-APR-15','29-APR-15');
+ERROR at line 1:
+ORA-01779: cannot modify a column which maps to a non key-preserved table
+//Hence Error!
+
+c) Try to increment basic by Rs.100.
+update emp_view2 set basic=basic+100;
+                     *
+ERROR at line 1:
+ORA-01779: cannot modify a column which maps to a non key-preserved table
+//Hence Error!
+
+d) Delete the view.
+drop view emp_view2;
+
+5. a)Create a table having empcode , Name, Deptname, & basic From the existing tables alongwith the
+records of the employee who are in a particular department(say, d1) and with a basic Rs 7000/-
+create table TEMPEMP as select	 e.EMP_CODE,e.EMP_NAME,d.DEPT_NAME,BASIC from NEWEMP e ,DEPART d where BASIC=7000 and DEPT_NAME='Purchase' and e.DEPT_CODE=d.DEPT_CODE;
+
+b) From the existing table add the employees with the basic salary greater than or equal to 7000/ -
+insert into TEMPEMP select EMP_CODE,EMP_NAME,DEPT_NAME,BASIC from NEWEMP e,DEPART d where e.DEPT_CODE=d.DEPT_CODE and BASIC > 7000;
+
+c) Alter the table to add a net pay column.
+alter table TEMPEMP add NETPAY NUMBER;
+
+d) Replace net pay with 1.5* Basic.
+update TEMPEMP set NETPAY=1.5*BASIC;
+
+e) Try to remove the net pay column.
+[ It may require no. of steps]
+alter table TEMPEMP drop column NETPAY;
+
+6. Drop all the tables that you have created.
+drop table TEMPEMP;
+
